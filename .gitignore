@@ -1,3 +1,5 @@
 cache_files/*
-
 opt/*
+images/*
+.ipynb_checkpoints/*
+saved_models/*
