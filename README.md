@@ -1,102 +1,68 @@
-# Image-Captioning
+# Image Captioning
 Generating captions from images
 
+*This project is developed from Udacity's Computer Vision Nanodegree*
 
-## About this project
-
-This poject is from Udacity's Computer Vision Nanodegree
-
-## The dataset
-
-I use the Microsoft Common Objects in Contect (MS COCO) in this project. Link: [COCO](https://cocodataset.org/#home)
-
-### Data loader
+## Summary
 
 
-### Model architecture
 
-The model consists of an encoder an a decoder.
+## Future Work
 
-#### Encoder (pre-trained ResNet50)
+1. Use **Vision Transformer** to serve as the encoder to extract features from the images
+2. Use **Transformer** to serve as the decoder to generate captions
+3. Use SOTA **VisualBERT** or **ViLBERT** for end-to-end image captioning
+
+## Dataset
+
+I use the Microsoft Common Objects in Content (MS COCO) Dataset (Ver. 2014)
+
+Link to the MS COCO Dataset: https://cocodataset.org/#home
+
+This projects use the [COCO API](https://github.com/cocodataset/cocoapi) provided by the MS COCO. Instructions in detail can be found on their websites. There is a brief instruction:
+
+1. In your work directory, create a folder `opt`
+2. In the `opt` folder, run the bash command `git clone https://github.com/cocodataset/cocoapi.git`
+3. Download `2014 Train/Val annotations [241MB]` from [MS COCO download page](https://cocodataset.org/#download)
+4. Extract the zip file `annotation_trainval2014.zip` into the `opt/cocoapi` folder
+5. (Checkpoint) You should see a folder `annotations` inside the `opt/cocoapi` folder
+6. Download `2014 Testing Image info [1MB]` from [MS COCO download page](https://cocodataset.org/#download)
+7. Extract the zip file `image_info_test2014.zip` into the `opt/cocoapi` folder
+8. (Checkpoint) You should see a file `image_info_test2014.json` inside the `opt/cocoapi/annotations` folder
+9. In your work directory, create a folder `images`
+10. Download `2014 Train images [83K/13GB]` from [MS COCO download page](https://cocodataset.org/#download)
+11. Download `2014 Val images [41K/6GB]` from [MS COCO download page](https://cocodataset.org/#download)
+12. Download `2014 Test images [41K/6GB]` from [MS COCO download page](https://cocodataset.org/#download)
+13. Extract all 3 downloaded zip files (steps 10-12) into the `images` folder
+14. (Checkpoint) You should see 3 folders (`train2014`, `val2014`, `test2014`) inside the `images` folder
+
+## Model
+
+The model consists of an encoder an a decoder. The encoder extract semantic information from the input image to generate a feature vector.
+
+### Encoder
 
 I use a pre-trained ResNet-50 network to extract the features from an image. I removed the last fc layer, flattened the final output and pass through a dense layer to obtain a feature vector of size `embed_size`
 
-```python3
-import torch
-import torch.nn as nn
-import torchvision.models as models
-
-class ResnetEncoder(nn.module):
-  def __init__(self, embed_size):
-    super(ResnetEncoder, self).__init__()
-    
-    resnet50 = models.resnet50(pretrained=True)
-    last_fc_in_features = resnet50.fc.in_features
-    # all layers excluding the last
-    modules = list(resnet50.children())[:-1]
-    
-    # the resnet layer
-    self.resnet = nn.Sequential(*modules)
-    
-    # freeze the weights
-    for param in self.resnet.parameters():
-      param.requires_grad = False
-    
-    self.embedding = nn.Linear(last_fc_in_features, embed_size)
-    
-  def forward(self, x):
-    # pretrained resnet
-    y = self.resnet(x)
-    # flatten
-    y = y.view(y.shape[0], -1)
-    # embedding
-    y = self.embedding(y)
-    
-    return y
-```
-#### Decoder (LSTM)
+### Decoder
 
 I use an LSTM netork as the decoder. I train the model from scratch.
 
-```python3
-import torch
-import torch.nn as nn
-import torchvision.models as models
 
-class LSTMDecoder(nn.Module):
-  def __init__(self, embed_size, hidden_size, vocab_size, num_layers=1):
-      """
-      
-      """
-      super(LSTMDecoder, self).__init__()
-      
-      # the lstm layer(s)
-      self.lstm = nn.LSTM(input_size=embed_size, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
-      # the fc layer
-      self.fc = nn.Linear(hidden_size, embed_size)
-      
-  def forward(self, features, captions):
-      batch_size = features.shape[0]
-      seq_len = captions.shape[1]
-      
-      # inputs
-      inputs = torch.cat(seq_len*[features]).view(batch_size, seq_len, -1)
-      # LSTM
-      lstm_outputs, hc = self.lstm(inputs)
-      # fc
-      fc_outputs = self.fc(lstm_outputs)
-      
-      return fc_outputs
-
-```
-
-
-### Hyperparameters
+## Hyperparameters
 
 #### Vocaburary frequency threshold
 
-The parameter `vocab_freq_threshold` set the minimum number that a vocabulary needs to appear in the training corpus to enter our vocabulary dictionary.
+The parameter `vocab_freq_threshold` set the minimum number that a vocabulary needs to appear in the training corpus to enter our vocabulary dictionary. The larger the `vocab_freq_threshold`, the bigger the vocabulary dictionary.
 
-The larger the `vocab_freq_threshold`, the bigger the vocabulary dictionary.
+## Evaluation
+
+I use the **BLEU-4 Score** to evaluate the model performance
 
 
+## References
+
+1. Udacity's Computer Vision Nanodegree
+2. COCO API: https://github.com/cocodataset/cocoapi
+3. This notebook tells how to download the COCO Dataset https://colab.research.google.com/github/rammyram/image_captioning/blob/master/Image_Captioning.ipynb
+4. Google's paper using LSTM for image captioning https://arxiv.org/pdf/1411.4555.pdf
