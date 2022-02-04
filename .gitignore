@@ -3,3 +3,4 @@ opt/*
 images/*
 .ipynb_checkpoints/*
 saved_models/*
+custom_test_images/*
