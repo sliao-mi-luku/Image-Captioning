@@ -4,6 +4,8 @@ images/*
 .ipynb_checkpoints/*
 saved_models/*
 custom_test_images/*
+readme_images/*
+
 
 ImgCap_ResNet_LSTM_dev.ipynb
 

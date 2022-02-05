@@ -1,11 +1,15 @@
 # Image Captioning
-Generating captions from images
+
+*Last updated: 02/04/2022*
 
 *This project is developed from Udacity's Computer Vision Nanodegree*
 
-## Summary
+## Project Summary
 
-
+1.
+2.
+3.
+4.
 
 ## Future Work
 
@@ -19,7 +23,14 @@ I use the Microsoft Common Objects in Content (MS COCO) Dataset (Ver. 2014)
 
 Link to the MS COCO Dataset: https://cocodataset.org/#home
 
-This projects use the [COCO API](https://github.com/cocodataset/cocoapi) provided by the MS COCO. Instructions in detail can be found on their websites. There is a brief instruction:
+[![COCO-homepage.png](https://i.postimg.cc/K8JTC9jW/COCO-homepage.png)](https://postimg.cc/rDRzrNSG)
+<p align="center">
+    MS COCO Dataset (https://cocodataset.org/#home)
+</p>
+
+**How to Download MS COCO Dataset**
+
+This projects use the [COCO API](https://github.com/cocodataset/cocoapi) provided by the MS COCO. Instructions in detail can be found on their websites. Here is a brief instruction:
 
 1. In your work directory, create a folder `opt`
 2. In the `opt` folder, run the bash command `git clone https://github.com/cocodataset/cocoapi.git`
@@ -35,6 +46,7 @@ This projects use the [COCO API](https://github.com/cocodataset/cocoapi) provide
 12. Download `2014 Test images [41K/6GB]` from [MS COCO download page](https://cocodataset.org/#download)
 13. Extract all 3 downloaded zip files (steps 10-12) into the `images` folder
 14. (Checkpoint) You should see 3 folders (`train2014`, `val2014`, `test2014`) inside the `images` folder
+
 
 ## Model
 
