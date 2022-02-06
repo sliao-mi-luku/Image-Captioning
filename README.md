@@ -2,20 +2,24 @@
 
 *Last updated: 02/04/2022*
 
+[![hybrid-model.png](https://i.postimg.cc/nzSsy1Vt/hybrid-model.png)](https://postimg.cc/ftXTXm0H)
+<p align="center">
+    Image Captioning
+</p>
+
 *This project is developed from Udacity's Computer Vision Nanodegree*
 
 ## Project Summary
 
-1.
-2.
-3.
-4.
+1. Use a hybrid CNN-RNN model to automatically **generate descriptive text captions** for images (MS COCO Dataset)
+2. Train a **ResNet encoder** to extract and embed the semantic features from images and an **LSTM decoder** to output captions
+3. Achieve BLEU score = 15.98 (1-gram score = 60.55) on validation dataset
+4. Use the model to predict captions from custom input images
 
 ## Future Work
 
 1. Use **Vision Transformer** to serve as the encoder to extract features from the images
 2. Use **Transformer** to serve as the decoder to generate captions
-3. Use SOTA **VisualBERT** or **ViLBERT** for end-to-end image captioning
 
 ## Dataset
 
@@ -63,13 +67,23 @@ I use an LSTM netork as the decoder. I train the model from scratch.
 
 ## Hyperparameters
 
+```python
+VOCAB_THRESHOLD = 5
+BATCH_SIZE = 32
+EMBED_SIZE = 512
+HIDDEN_SIZE = 512
+LR = 1e-3
+```
+
 #### Vocaburary frequency threshold
 
 The parameter `vocab_freq_threshold` set the minimum number that a vocabulary needs to appear in the training corpus to enter our vocabulary dictionary. The larger the `vocab_freq_threshold`, the bigger the vocabulary dictionary.
 
 ## Evaluation
 
-I use the **BLEU-4 Score** to evaluate the model performance
+I use the **BLEU Score** to evaluate the model performance.
+
+The model achieves **BLEU Score = **
 
 
 ## References
