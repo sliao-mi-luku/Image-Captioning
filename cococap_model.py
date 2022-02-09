@@ -9,6 +9,41 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 
+from transformers import ViTModel, ViTConfig, ViTFeatureExtractor, ViTForImageClassification
+
+
+class EncoderViT(nn.Module):
+    """
+    Encoder (ViT-based)
+    """
+    def __init__(self, embed_size):
+        """
+        Args
+            embed_size: (int) dimension of image semantics features to be encoded
+        """
+        super(EncoderViT, self).__init__()
+        # load the pre-trained ResNet
+        vit = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
+        # freeze the weights
+        for param in vit.parameters():
+            param.requires_grad = False
+        self.vit = vit
+        # change the last layer
+        self.vit.classifier = nn.Linear(in_features=768, out_features=embed_size, bias=True)
+
+
+    def forward(self, images):
+        """
+        Args
+            images: (tensor) processed image tensor. shape=(batch_size, 3, 224, 224)
+        Returns
+            feature: (tensor) extracted image semantic features. shape=(batch_size, self.embed_size)
+        """
+        # vit stage
+        features = self.vit(images).logits
+        return features
+    
+    
 class EncoderCNN(nn.Module):
     """
     Encoder (ResNet-based)

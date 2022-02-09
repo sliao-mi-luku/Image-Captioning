@@ -3,9 +3,10 @@ COCO Image Captioning - helper functions
 """
 
 import numpy as np
-import pytorch
+import torch
 import matplotlib.pyplot as plt
 from PIL import Image
+import json
 
 
 def get_word_list_and_sentence(token_list, vocab):
@@ -37,7 +38,7 @@ def get_word_list_and_sentence(token_list, vocab):
 
 
 
-def random_sample_testdata(dataloader, encoder, decoder):
+def random_sample_testdata(dataloader, encoder, decoder, device):
     """
     Random sample an image from the test data and generate the caption along with it
     Args
@@ -66,7 +67,7 @@ def random_sample_testdata(dataloader, encoder, decoder):
 
 
 
-def image_captioning_custom_image(img_path, encoder, decoder):
+def image_captioning_custom_image(img_path, encoder, decoder, device):
     """
     Generate a caption for a custom image
     Args

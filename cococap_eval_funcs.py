@@ -10,7 +10,7 @@ from torchtext.data.metrics import bleu_score
 from cococap_auxfuncs import get_word_list_and_sentence
 
 
-def eval_BLEU(encoder, decoder, dataloader, vocab):
+def eval_BLEU(encoder, decoder, dataloader, vocab, device):
     """
     Evaluate the model on a chosen dataset to calculate the overall BLEU score
     Args
@@ -18,6 +18,7 @@ def eval_BLEU(encoder, decoder, dataloader, vocab):
         decoder: (Pytorch model) decoder
         dataloader: (Pytorch dataloader) single_dataloader_train OR single_dataloader_val
         vocab: (obj) the vocabulary object
+        device: gpu or cpu
     Returns
         avg_bleu: (float) average BLEU score
         bleu_list: (list) list of BLEUs scores for all data
@@ -82,9 +83,9 @@ def eval_BLEU(encoder, decoder, dataloader, vocab):
             bleu_candidates.append(cancadate)
             bleu_references.append(dict_references[img_id])
 
-    bleu1 = bleu_score(bleu_candidates, bleu_references, max_n=4, weights=[1.0, 0.0, 0.0, 0.0])
-    bleu2 = bleu_score(bleu_candidates, bleu_references, max_n=4, weights=[0.5, 0.5, 0.0, 0.0])
-    bleu3 = bleu_score(bleu_candidates, bleu_references, max_n=4, weights=[0.33, 0.33, 0.33, 0.0])
+    bleu1 = bleu_score(bleu_candidates, bleu_references, max_n=1, weights=[1.0])
+    bleu2 = bleu_score(bleu_candidates, bleu_references, max_n=2, weights=[0.5, 0.5])
+    bleu3 = bleu_score(bleu_candidates, bleu_references, max_n=3, weights=[0.33, 0.33, 0.33])
     bleu4 = bleu_score(bleu_candidates, bleu_references, max_n=4, weights=[0.25, 0.25, 0.25, 0.25])
 
     bleu = [bleu1, bleu2, bleu3, bleu4]

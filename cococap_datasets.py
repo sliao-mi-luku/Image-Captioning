@@ -4,7 +4,7 @@ COCO Image Captioning - Custom COCO Datasets
 
 import numpy as np
 import torch
-import torch.utils.data.Dataset as Dataset
+from torch.utils.data import Dataset
 from pycocotools.coco import COCO
 from tqdm import tqdm
 import nltk
@@ -12,6 +12,7 @@ nltk.download('punkt')
 
 from PIL import Image
 import os
+import json
 
 
 class CoCoDataset_DevMode(Dataset):
