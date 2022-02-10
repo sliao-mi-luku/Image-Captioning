@@ -38,7 +38,7 @@ def get_word_list_and_sentence(token_list, vocab):
 
 
 
-def random_sample_testdata(dataloader, encoder, decoder, device):
+def random_sample_testdata(dataloader, encoder, decoder, vocab, device):
     """
     Random sample an image from the test data and generate the caption along with it
     Args
@@ -61,13 +61,13 @@ def random_sample_testdata(dataloader, encoder, decoder, device):
         features_t = encoder(image_t).unsqueeze(1)
         token_list = decoder.sample(features_t)
 
-    decoded_word_list, decoded_sentence = get_word_list_and_sentence(token_list)
+    decoded_word_list, decoded_sentence = get_word_list_and_sentence(token_list, vocab)
 
     print(decoded_sentence)
 
 
 
-def image_captioning_custom_image(img_path, encoder, decoder, device):
+def image_captioning_custom_image(img_path, encoder, decoder, img_transform, vocab, device):
     """
     Generate a caption for a custom image
     Args
@@ -84,10 +84,10 @@ def image_captioning_custom_image(img_path, encoder, decoder, device):
     plt.axis('off')
 
     # caption prediction
-    image_t = transform_eval(Image.open(img_path).convert('RGB'))
-    image_t = image_t.to(device)
+    image_t = img_transform(Image.open(img_path).convert('RGB'))
+    image_t = image_t.unsqueeze(0).to(device)
     with torch.no_grad():
         features_t = encoder(image_t).unsqueeze(1)
         token_list = decoder.sample(features_t)
-    decoded_word_list, decoded_sentence = get_word_list_and_sentence(token_list)
+    decoded_word_list, decoded_sentence = get_word_list_and_sentence(token_list, vocab)
     print(decoded_sentence)

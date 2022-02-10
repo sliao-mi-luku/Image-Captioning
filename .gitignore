@@ -10,3 +10,6 @@ readme_images/*
 ImgCap_ResNet_LSTM_dev.ipynb
 
 ImgCap_ResNet_LSTMCopy.ipynb
+
+
+__pycache__/*
